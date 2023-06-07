@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}We Movies{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <br>
+        <div class="row">
+            <div class="col-6"><h1>A propos de We Movies</h1></div>
+            <div class="col-6">
+                <div class="input-group">
+                    <input type="text" class="form-control" id="search-value">
+                    <button class="btn btn-outline-secondary" id="search" type="button" id="search-button">
+                        Search
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-4">
+                {% for genre in genres %}
+                    <div class="">
+                        <input class="genre" name="genres[]" value="{{ genre.id }}" type="checkbox">
+                        {{ genre.name }}
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="col-8">
+                <h2>{{ bestMovie.title }}</h2>
+                <p>{{ bestMovie.overview }}</p>
+                <iframe width="560" height="315" src="{{ bestMovieTrailer['youtube_url'] }}" title="YouTube video player"></iframe>
+                <hr />
+
+                <div id="result"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal modal-lg" id="modal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
