@@ -100,7 +100,8 @@ class TMDB
         return [];
     }
 
-    private function get(string $url, array $params = []) {
+    private function get(string $url, array $params = []): ResponseInterface
+    {
         $params = ['query' => array_merge(
             $params, ['api_key' => $this->apiKey,'language' => $this->apiLang]
         )];
