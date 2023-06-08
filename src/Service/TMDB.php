@@ -17,10 +17,15 @@ class TMDB
     {
         $apiResponse = $this->get('https://api.themoviedb.org/3/genre/movie/list');
 
-        return $this->decodeResponse($apiResponse)['genres'];
+        $response = $this->decodeResponse($apiResponse);
+        if (isset($response['genres'])) {
+            return $this->decodeResponse($apiResponse)['genres'];
+        }
+
+        return [];
     }
 
-    public function getBestMovie(): ?array
+    public function getBestMovie(): array
     {
 
         $apiResponse = $this->get('https://api.themoviedb.org/3/discover/movie', ['sort_by' => 'popularity.desc']);
@@ -30,17 +35,22 @@ class TMDB
             return $bestMovies['results'][0];
         }
 
-        return null;
+        return [];
     }
 
     public function getMoviesByGenre(string $genres): array
     {
         $apiResponse = $this->get('https://api.themoviedb.org/3/discover/movie', ['with_genres' => $genres]);
 
-        return $this->decodeResponse($apiResponse)['results'];
+        $response = $this->decodeResponse($apiResponse);
+        if (isset($response['results'])) {
+            return $this->decodeResponse($apiResponse)['results'];
+        }
+
+        return [];
     }
 
-    public function getTrailer(int $movieId): ?array
+    public function getTrailer(int $movieId): array
     {
         $apiResponse = $this->get('https://api.themoviedb.org/3/movie/' . $movieId . '/videos');
 
@@ -54,23 +64,40 @@ class TMDB
             }
         }
 
-        return null;
+        return [];
     }
 
     public function searchMovie(string $search): array
     {
         $apiResponse = $this->get('https://api.themoviedb.org/3/search/movie', ['query' => $search]);
 
-        return $this->decodeResponse($apiResponse)['results'];
+        $response = $this->decodeResponse($apiResponse);
+        if (isset($response['results'])) {
+            return $this->decodeResponse($apiResponse)['results'];
+        }
+
+        return [];
     }
 
-    private function decodeResponse(ResponseInterface $response): ?array
+    public function autocompleteSearchMovie(string $search): array
+    {
+        $apiResponse = $this->searchMovie($search);
+
+        $moviesList = [];
+        foreach ($apiResponse as $movie) {
+            $moviesList[] = $movie['title'];
+        }
+
+        return $moviesList;
+    }
+
+    private function decodeResponse(ResponseInterface $response): array
     {
         if ($response->getStatusCode() === 200) {
             return json_decode($response->getContent(), true);
         }
 
-        return null;
+        return [];
     }
 
     private function get(string $url, array $params = []) {

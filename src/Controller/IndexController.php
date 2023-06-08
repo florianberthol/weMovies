@@ -54,4 +54,13 @@ class IndexController extends AbstractController
 
         return new JsonResponse($apiResponse);
     }
+
+    #[Route('/search/autocomplete', name: 'app_index_search_autocomplete', methods: ['GET'])]
+    public function autocompleteSearch(TMDB $tmdb, Request $request): Response
+    {
+        $search = $request->query->get('term');
+        $apiResponse = $tmdb->autocompleteSearchMovie($search);
+
+        return new JsonResponse($apiResponse);
+    }
 }

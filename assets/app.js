@@ -6,12 +6,19 @@
  */
 const $ = require('jquery');
 const bootstrap = require('bootstrap');
+import 'jquery-ui/dist/jquery-ui.min.js';
 
 $(document).ready(function () {
     $('#search').on('click', function() {
         $('#result').html('');
         $('.genre').prop( "checked", false );
         $.get('/search?search=' + $('#search-value').val(), updateMovieListe);
+    });
+
+    $('#search-value').autocomplete({
+        delay: 500,
+        minLength: 3,
+        source: '/search/autocomplete'
     });
 
     $('.container').on('click', '.detail', function () {
@@ -66,4 +73,5 @@ function updateMovieListe(data) {
 
 // any CSS you import will output into a single css file (app.css in this case)
 import 'bootstrap/dist/css/bootstrap.css';
+import 'jquery-ui/dist/themes/ui-lightness/jquery-ui.css'
 import './styles/app.css';
