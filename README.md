@@ -14,4 +14,4 @@ Start server
 symfony server:start 
 ```
 
-/!\ You will need to change the API_KEY value in the .env file to get an access to the api 
+/!\ You will need to change the API_KEY value in the .env file to get an access to the api. To generate api key create an account to https://developer.themoviedb.org/
